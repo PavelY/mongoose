@@ -1,0 +1,33 @@
+CFLAGS  ?=  -W -Wall -Wextra -Werror -Wundef -Wshadow -Wdouble-promotion \
+            -Wformat-truncation -fno-common -Wconversion -ffreestanding \
+            -g3 -Os -ffunction-sections -fdata-sections -I. \
+            -mcpu=cortex-m0plus -mthumb $(EXTRA_CFLAGS)
+LDFLAGS ?= -Tlink.ld -nostartfiles --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$@.map
+SOURCES = main.c startup.c syscalls.c usb.c
+
+#SOURCES += ../../../mongoose.c
+#CFLAGS += -I../../.. -DMG_ARCH=MG_ARCH_NEWLIB -DMG_ENABLE_CUSTOM_MILLIS=1
+
+build: firmware.uf2
+
+ifeq ($(OS),Windows_NT)
+  RM = cmd /C del /Q /F
+  BIN2UF2 = bin2uf2.exe
+else
+  BIN2UF2 = ./bin2uf2
+  RM = rm -f
+$(BIN2UF2): tools/bin2uf2.c
+	$(CC) -W -Wall $< -o $@
+endif
+
+firmware.elf: $(SOURCES) mcu.h
+	arm-none-eabi-gcc $(SOURCES) $(CFLAGS) $(LDFLAGS) -o $@
+
+firmware.bin: firmware.elf
+	arm-none-eabi-objcopy -O binary $< $@
+
+firmware.uf2: firmware.bin $(BIN2UF2)
+	$(BIN2UF2) $< $@
+
+clean:
+	$(RM) firmware.* bin2uf2
