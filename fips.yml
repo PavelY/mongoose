@@ -17,7 +17,8 @@
 #       defines:
 #           KEY: VALUE (C preprocessor defines)
 #           ...: ...
-#       modules:
+       modules:
+         mongoose: .
 #           NAME:   DIRECTORY WITH CMakeLists.txt of MODULE
 #           ...: ...
 #   run:
