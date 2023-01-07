@@ -6,8 +6,9 @@
 #       PROJ-NAME:
 #           git: GIT-URL
 #           branch: OPTIONAL BRANCH OR TAG NAME
-#   exports:
-#       header-dirs:
+   exports:
+       header-dirs:
+         - .
 #           - RELATIVE HEADER SEARCH PATH
 #           - ...
 #       lib-dirs:
@@ -23,4 +24,3 @@
 #       TARGET-NAME:
 #           cwd:    WORKING DIRECTORY FOR 'fips run target'
 #       ...
-
