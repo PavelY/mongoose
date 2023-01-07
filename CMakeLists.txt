@@ -9,6 +9,9 @@ include("${FIPS_ROOT_DIR}/cmake/fips.cmake")
 
 # include_directories(src)
 fips_setup()
-# add_subdirectory(src/...)
-# add_subdirectory(src/...)
-fips_finish()
+fips_begin_lib(mongoose)
+  fips_files(
+    mongoose.h
+    mongoose.c
+  )
+fips_end_lib()
